@@ -1,0 +1,154 @@
+Source: android-tools
+Section: unknown
+Priority: optional
+Maintainer: Bùi Gia Viện <shadichy@blisslabs.org>
+Rules-Requires-Root: no
+Build-Depends:
+ cmake,
+ cmake-extras,
+ extra-cmake-modules,
+ ninja-build,
+ bash-completion,
+ debhelper-compat (= 13),
+ dh-exec,
+Build-Depends-Arch:
+ 7zip (>= 22.01+dfsg-9) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ android-libboringssl-dev (>= 12) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ clang [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el s390x ppc64 sparc64 riscv64],
+ libbrotli-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libcap-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libgtest-dev,
+ libfmt-dev,
+ liblz4-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libpng-dev,
+ libprotobuf-dev (>= 3.12) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libsquashfuse-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libusb-1.0-0-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libzstd-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ lld [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el],
+ pandoc [amd64 i386 armel armhf arm64 ia64 mipsel mips64el ppc64el s390x ppc64],
+ protobuf-compiler (>= 3.12) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ python3 [amd64 i386 arm64],
+Standards-Version: 4.6.2
+Homepage: https://github.com/shadichy/android-tools
+Vcs-Browser: https://github.com/shadichy/android-tools
+Vcs-Git: https://github.com/shadichy/android-tools
+
+Package: adb
+Section: utils
+Architecture: amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         android-libcutils (= ${binary:Version}),
+Recommends: android-sdk-platform-tools-common (>= 28.0.2~)
+Provides: android-tools-adb
+Description: Android Debug Bridge
+ A versatile command line tool that lets you communicate with an emulator
+ instance or connected Android-powered device.
+ .
+ This package recommends "android-sdk-platform-tools-common" which contains
+ the udev rules for Android devices. Without this package, adb and fastboot need
+ to be running with root permission.
+
+Package: libsparse-utils
+Architecture: any
+Multi-Arch: foreign
+Section: utils
+Depends: ${shlibs:Depends}, ${misc:Depends},
+         ext2simg,
+Breaks: android-sdk-libsparse-utils,
+        android-tools-fsutils,
+        append2simg (<< 1:10.0.0+r36-1~),
+        img2simg (<< 1:10.0.0+r36-1~),
+        simg2img (<< 1:10.0.0+r36-1~)
+Replaces: android-sdk-libsparse-utils,
+          android-tools-fsutils,
+          append2simg (<< 1:10.0.0+r36-1~),
+          img2simg (<< 1:10.0.0+r36-1~),
+          simg2img (<< 1:10.0.0+r36-1~)
+Description: Android sparse image creation tool
+ Command line tools to create sparse images for usage with Android devices.
+ Includes simg2img, img2simg and append2simg tools.
+
+Package: ext2simg
+Architecture: any
+Multi-Arch: foreign
+Section: utils
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Breaks: libsparse-utils
+Replaces: libsparse-utils
+Description: Android sparse image conversion tool
+ Command line tools to convert extfs images to sparse images for usage with Android devices.
+
+Package: android-f2fs-tools
+Architecture: any
+Multi-Arch: foreign
+Section: utils
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Tools for Flash-Friendly File System
+ F2FS is a new filesystem for Linux aimed at NAND flash memory-based storage
+ devices, such as SSD, eMMC, and SD cards. It is based on Log-structured File
+ System (LFS).
+
+Package: android-partition-tools
+Architecture: any
+Multi-Arch: foreign
+Section: utils
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Android logical partition creation tool
+ Command line tools to manipulate logical partitions for usage with Android devices.
+ Includes lpadd, lpdump, lpflash, lpmake and lpunpack tools.
+
+Package: fastboot
+Section: utils
+Architecture: amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends},
+         android-libcutils (= ${binary:Version}),
+         android-libsparse (= ${binary:Version}),
+         android-libziparchive (= ${binary:Version}),
+Recommends: android-sdk-platform-tools-common (>= 28.0.2~)
+Suggests: android-sdk-platform-tools
+Provides: android-tools-fastboot
+Description: Android fastboot tool
+ A command line tool for flashing an Android device, boot an Android device to
+ fastboot mode, etc..
+ .
+ This package recommends "android-sdk-platform-tools-common" which contains
+ the udev rules for Android devices. Without this package, adb and fastboot need
+ to be running with root permission.
+
+Package: avbtool
+Architecture: any
+Multi-Arch: foreign
+Section: utils
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Tools for working with Android Verified Boot 2.0
+ AVB is a version of Verified Boot that works with Project Treble architecture,
+ which separates the Android framework from the underlying vendor implementation.
+
+Package: bootimg-utils
+Depends: ${misc:Depends},
+         python3:any,
+Breaks: android-tools-mkbootimg (<< 1:10.0.0+r36-11),
+        mkbootimg (<< 1:10.0.0+r36-11)
+Replaces: android-tools-mkbootimg (<< 1:10.0.0+r36-11),
+          mkbootimg (<< 1:10.0.0+r36-11)
+Architecture: all
+Multi-Arch: foreign
+Section: utils
+Description: Creates Android boot images
+ Command line tools to create Android boot images that includes kernel image and
+ ramdisk, in a  special format which can be used with fastboot.
+ .
+ Includes mkbootimg, unpack_bootimg, repack_bootimg
+
+Package: mkdtboimg
+Depends: ${misc:Depends},
+         python3:any,
+Architecture: all
+Multi-Arch: foreign
+Section: utils
+Description: Packing multiple DTB/DTBO files into a single image
+
+

@@ -1,0 +1,5 @@
+usr/bin/lpadd
+usr/bin/lpdump
+usr/bin/lpflash
+usr/bin/lpmake
+usr/bin/lpunpack

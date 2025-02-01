@@ -1,0 +1,3 @@
+usr/bin/fastboot
+usr/share/android-tools/completions/fastboot
+usr/share/bash-completion/completions/fastboot

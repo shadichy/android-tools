@@ -59,6 +59,8 @@ set(android-vendored
 
 # XXX: Consider using https://cmake.org/cmake/help/v3.0/module/ExternalProject.html
 if(ANDROID_TOOLS_PATCH_VENDOR AND EXISTS "${ANDROID_PATCH_DIR}/")
+	execute_process(COMMAND git config --global user.email "${DEBEMAIL}")
+	execute_process(COMMAND git config --global user.name "${DEBFULLNAME}")
 	execute_process(COMMAND git submodule --quiet update)
 	foreach(v ${android-vendored})
 		file(GLOB patches ${ANDROID_PATCH_DIR}/${v}/*.patch)

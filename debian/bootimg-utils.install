@@ -1,0 +1,5 @@
+usr/bin/mkbootimg
+usr/bin/unpack_bootimg
+usr/bin/repack_bootimg
+usr/share/android-tools/mkbootimg/mkbootimg.py
+usr/share/android-tools/mkbootimg/gki/generate_gki_certificate.py

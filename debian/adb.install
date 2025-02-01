@@ -1,0 +1,3 @@
+usr/bin/adb
+usr/share/android-tools/completions/adb
+usr/share/bash-completion/completions/adb

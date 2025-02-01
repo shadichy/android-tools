@@ -1,0 +1,79 @@
+#!/usr/bin/make -f
+
+
+include /usr/share/dpkg/architecture.mk
+include /usr/share/dpkg/pkg-info.mk
+
+## Security Hardening
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+# https://android.googlesource.com/platform/build/soong/+/refs/tags/platform-tools-34.0.5/cc/config/global.go#356
+export DEB_CFLAGS_MAINT_APPEND = -fPIC -std=gnu17
+export DEB_CXXFLAGS_MAINT_APPEND = -fPIC -std=gnu++2a
+export DEB_LDFLAGS_MAINT_APPEND = -fPIC
+export DEB_CPPFLAGS_MAINT_APPEND = -DNDEBUG -UDEBUG \
+  -fmessage-length=0 \
+  -fno-exceptions \
+  -fno-strict-aliasing \
+  -no-canonical-prefixes \
+
+## For get-orig-source
+export DEB_SOURCE
+
+## system
+export DEB_HOST_MULTIARCH
+export DEB_VERSION
+# https://android.googlesource.com/platform/development/+/refs/tags/platform-tools-34.0.5/sdk/plat_tools_source.prop_template
+export PLATFORM_TOOLS_VERSION = 34.0.5
+
+ifneq (, $(shell which clang))
+  export CC = clang
+  export CXX = clang++
+  export DEB_CFLAGS_MAINT_APPEND += -gdwarf-4
+  export DEB_CXXFLAGS_MAINT_APPEND += -gdwarf-4
+  export DEB_CPPFLAGS_MAINT_APPEND += \
+    -Wno-c99-designator \
+    -Wno-gnu-designator \
+    -Wno-gnu-folding-constant \
+
+endif
+ifneq (, $(shell which lld))
+  export DEB_LDFLAGS_MAINT_APPEND += -fuse-ld=lld -Wl,--build-id=sha1
+endif
+
+%:
+	dh $@ --with bash-completion --builddirectory=out
+
+override_dh_auto_configure:
+	git config --global user.email "$(DEBEMAIL)"
+	git config --global user.name "$(DEBFULLNAME)"
+	git submodule --quiet update --init
+	dh_auto_configure -- \
+	  -DDEBEMAIL="$(DEBEMAIL)" \
+	  -DDEBFULLNAME="$(DEBFULLNAME)" \
+	  -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON \
+    -Dprotobuf_MODULE_COMPATIBLE=ON \
+    -DANDROID_TOOLS_LIBUSB_ENABLE_UDEV=ON \
+    -DANDROID_TOOLS_USE_BUNDLED_LIBUSB=ON
+
+ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
+override_dh_auto_test-arch:
+ifneq ($(filter amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64,$(DEB_HOST_ARCH)),)
+	out/vendor/adb version
+	out/vendor/adb help
+	out/vendor/adb keygen key.txt && ls -l key.txt* && rm key.txt*
+	out/vendor/fastboot --version
+	out/vendor/fastboot devices
+endif
+endif
+
+override_dh_gencontrol:
+	dh_gencontrol
+	dh_gencontrol -padb -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pandroid-f2fs-tools -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pandroid-partition-tools -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pavbtool -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pbootimg-utils -- -v1:$(DEB_VERSION)
+	dh_gencontrol -plibsparse-utils -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pext2simg -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pfastboot -- -v1:$(DEB_VERSION)
+	dh_gencontrol -pmkdtboimg -- -v1:$(DEB_VERSION)
