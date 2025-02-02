@@ -10,7 +10,7 @@ Build-Depends:
  ninja-build,
  bash-completion,
  debhelper-compat (= 13),
- dh-exec,
+ git,
 Build-Depends-Arch:
  7zip [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
  android-libboringssl-dev (>= 12) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
