@@ -5,12 +5,12 @@ on:
     - cron: "0 0 15 * *"
   push:
     branches:
-      - main
+      - master
     tags:
       - v*
   pull_request:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
@@ -22,9 +22,6 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v4
-
-      - name: Prepare source files
-        run: ./prepare.sh
 
       - name: Build DEB package
         uses: DevChall-by-SDCY-and-VXM/debian-buildpackage-template@main
