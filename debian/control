@@ -24,6 +24,7 @@ Build-Depends-Arch:
  libpng-dev,
  libprotobuf-dev (>= 3.12) [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
  libsquashfuse-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
+ libudev-dev,
  libusb-1.0-0-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
  libzstd-dev [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el riscv64],
  lld [amd64 i386 armel armhf arm64 mipsel mips64el ppc64el],
