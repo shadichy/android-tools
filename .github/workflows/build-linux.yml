@@ -26,11 +26,13 @@ jobs:
       - name: Build DEB package
         uses: DevChall-by-SDCY-and-VXM/debian-buildpackage-template@main
         with:
-          distro: devuan/migrated:ceres-slim
+          distro: debian:unstable-slim
+          arch: amd64 i386
+          docker_arch_specific: true
           package_maintainer: Shadichy <shadichy@blisslabs.org>
 
       - name: Extract artifact
-        run: unzip -o built-deb-files-*.zip
+        run: unzip -o built-deb-files.zip
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
