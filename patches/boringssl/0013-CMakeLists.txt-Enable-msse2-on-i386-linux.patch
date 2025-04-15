@@ -1,0 +1,15 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 26fad80ab..faa8e5bcf 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -378,6 +378,10 @@ if(FIPS_DELOCATE OR NOT OPENSSL_NO_ASM)
+     endif()
+     if(NOT WIN32)
+       set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -Wa,--noexecstack")
++			if(CMAKE_SIZEOF_VOID_P EQUAL 4)
++				set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse2")
++				set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2")
++			endif()
+     endif()
+     # Clang's integerated assembler does not support debug symbols.
+     if(NOT CMAKE_ASM_COMPILER_ID MATCHES "Clang")
