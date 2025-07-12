@@ -55,7 +55,7 @@ jobs:
         run: ./debian/setup.sh
 
       - name: Build DEB package
-        uses: shadichy/build-deb@main
+        uses: DevChall-by-SDCY-and-VXM/debian-buildpackage-template@main
         with:
           distro: debian:unstable-slim
           arch: amd64
