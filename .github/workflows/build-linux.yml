@@ -55,7 +55,7 @@ jobs:
         run: ./debian/setup.sh
 
       - name: Build DEB package
-        uses: Ananda-Aropa/build-deb@main
+        uses: shadichy/build-deb@main
         with:
           distro: debian:unstable-slim
           arch: amd64
